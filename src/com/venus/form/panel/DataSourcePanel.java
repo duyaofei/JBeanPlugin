@@ -155,6 +155,7 @@ public class DataSourcePanel extends Subject {
         driverText.setText(data.getDriver());
         packageText.setText(data.getPackage());
         basePathTest.setText(data.getBasePath());
+        dbComboBox.setSelectedItem(dbDriver);
     }
 
     public void getData(DataBaseBean data) {

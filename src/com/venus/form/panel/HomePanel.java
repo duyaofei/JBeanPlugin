@@ -75,7 +75,8 @@ public class HomePanel implements IObserver {
                 super.mouseClicked(e);
 
                 if (regRadio.isSelected()) {
-                    viewTables(sqlText.getText());
+                    String reg = StringHelper.toUpper(sqlText.getText());
+                    viewTables("".equals(reg)? ".*":reg);
                 } else if (sqlRadio.isSelected()) {
                     String[] strs = sqlText.getText().split("#");
                     if (strs.length != 2) {

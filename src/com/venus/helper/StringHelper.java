@@ -124,6 +124,17 @@ public class StringHelper {
     }
 
     /**
+     * 转换成大写
+     * @param str
+     * @return
+     */
+    public static String toUpper(String str){
+        if(str!=null)
+            return str.toUpperCase();
+        return null;
+    }
+
+    /**
      * 断定字符串为 null 或 "" ;
      * @param src
      * @return
