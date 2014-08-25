@@ -91,7 +91,7 @@
               </grid>
             </constraints>
             <properties>
-              <text value="欢迎使用宁哥版JavaBean生成器"/>
+              <text value="欢迎使用JavaBean生成器"/>
             </properties>
           </component>
         </children>
