@@ -56,6 +56,13 @@ public class HomePanel implements IObserver {
 
     public HomePanel() {
 
+        msg = new Msg() {
+            @Override
+            public void showMsg(String msg, int type) {
+
+            }
+        };
+
         try {
             init();
         } catch (Exception e) {
@@ -113,11 +120,16 @@ public class HomePanel implements IObserver {
                         dataBaseBean.getPackage(),
                         templateBean == null ? "" : templateBean.getTemplate());
 
-                FileHelper.writeString(dataBaseBean.getBasePath() + File.separator +
-                                dataBaseBean.getPackage().replace(".", File.separator),
-                        StringHelper.toHumpFirstUpper(dbTable.getTableName()) + ".java",
-                        dBTableToJavaBean.doIt());
-                msg.showMsg("转换成功", Msg.SUCCESS);
+                try {
+                    FileHelper.writeString(dataBaseBean.getBasePath() + File.separator +
+                                    dataBaseBean.getPackage().replace(".", File.separator),
+                            StringHelper.toHumpFirstUpper(dbTable.getTableName()) + ".java",
+                            dBTableToJavaBean.doIt());
+                    msg.showMsg("转换成功", Msg.SUCCESS);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                    msg.showMsg(e1.getMessage(), Msg.FAIL);
+                }
             }
         });
         regRadio.addItemListener(new ItemListener() {
@@ -195,6 +207,7 @@ public class HomePanel implements IObserver {
      */
     private void init() throws Exception {
         dataBaseBean = SerializableHelper.unSerializable(DataBaseBean.class);
+        templateBean = SerializableHelper.unSerializable(TemplateBean.class);
         DBDriver dbDriver = DBHelper.getDbDriver(dataBaseBean.getDriver());
         Connection conn = DBHelper.buildConnection(dataBaseBean);
         sqlExecutor = new SqlExecutor(conn, dbDriver);
@@ -216,7 +229,7 @@ public class HomePanel implements IObserver {
     public void update() {
         try {
             init();
-            msg.showMsg("数据连接信息已更新", Msg.SUCCESS);
+            msg.showMsg("配置信息已更新", Msg.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
             msg.showMsg(e.getMessage(), Msg.FAIL);

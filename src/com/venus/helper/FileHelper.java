@@ -19,14 +19,18 @@ public class FileHelper {
         }
         return path;
     }
+
     /**
      * 创建java文件
+     * @param path
+     * @return 创建状态
+     * @throws Exception 目录无法创建，通常是权限不够
      */
-    private static boolean buildPath(String path){
+    private static boolean buildPath(String path) throws Exception {
         File file = new File(path);
         if(!file.exists()){
             if(!file.mkdirs() ){
-                throw new RuntimeException("创建目录：["+path+"]失败！");
+                throw new Exception("创建目录：["+path+"]失败！");
             }
         }
         return true;
@@ -49,31 +53,19 @@ public class FileHelper {
     }
 
 
-    public static void writeString(String path,String fileName,String content){
+    public static void writeString(String path,String fileName,String content) throws Exception {
 
-
-        Writer writer =null;
         if(buildPath(path)){
+            Writer writer;
             File file = buildFile(toFullPath(path)+fileName);
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-                writer.write(content);
-                writer.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                assert writer != null;
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
+            writer.write(content);
+            writer.flush();
         }
     }
 
 
-    public static void writeString(String path, String tableName, StringBuilder stringBuilder) {
+    public static void writeString(String path, String tableName, StringBuilder stringBuilder) throws Exception {
         writeString(path,tableName,stringBuilder.toString());
     }
 }

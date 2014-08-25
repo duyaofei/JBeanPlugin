@@ -1,6 +1,7 @@
 package com.venus.form.panel;
 
 import com.venus.DBDriver;
+import com.venus.form.Msg;
 import com.venus.form.Subject;
 import com.venus.helper.DBHelper;
 import com.venus.helper.SerializableHelper;
@@ -32,31 +33,19 @@ public class DataSourcePanel extends Subject {
     private JButton saveBtn;
     private JTextField packageText;
     private JTextField basePathTest;
-    private JLabel basePath;
 
     private DBDriver dbDriver;
     private DataBaseBean dataBaseBean;
 
+    private Msg msg;
+
+    public void setMsg(Msg msg) {
+        this.msg = msg;
+    }
+
     public DataSourcePanel() {
 
-        if (dataBaseBean == null) {
-            try {
-                dataBaseBean = SerializableHelper.unSerializable(DataBaseBean.class);
-                dbDriver = DBHelper.getDbDriver(dataBaseBean.getDriver());
-            } catch (IOException e) {
-                dataBaseBean = new DataBaseBean();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        //初始化数据库选择下拉控件
-        DefaultComboBoxModel<DBDriver> comboBoxModel = new DefaultComboBoxModel<DBDriver>();
-        comboBoxModel.addElement(DBDriver.MYSQL);
-        comboBoxModel.addElement(DBDriver.ORACLE);
-        this.dbComboBox.setModel(comboBoxModel);
-
-        setData(dataBaseBean);
+        init();
 
         //切换数据库
         dbComboBox.addItemListener(new ItemListener() {
@@ -75,6 +64,7 @@ public class DataSourcePanel extends Subject {
 
                 dbInfText.setText("");
                 dbInfText.setText("正在建立连接...\n");
+                msg.showMsg("正在建立连接...",Msg.SUCCESS);
                 try {
                     Connection connection = DBHelper
                             .buildConnection(dbDriver, urlText.getText(), userText.getText(), pwdText.getText());
@@ -82,12 +72,14 @@ public class DataSourcePanel extends Subject {
                     if (connection != null) {
                         dbInfText.append("Connection:[" + connection + "]\n");
                         dbInfText.append("连接成功\n");
+                        msg.showMsg("连接成功",Msg.SUCCESS);
                     }
 
                 } catch (Exception e1) {
                     e1.printStackTrace();
                     dbInfText.append(e1.getMessage() + "\n");
                     dbInfText.append("连接失败！！");
+                    msg.showMsg("连接失败",Msg.FAIL);
                 }
 
             }
@@ -103,14 +95,49 @@ public class DataSourcePanel extends Subject {
                 }
                 try {
                     SerializableHelper.serializable(dataBaseBean);
-                    JOptionPane.showMessageDialog(null, "保存成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    msg.showMsg("保存成功", Msg.SUCCESS);
                     notifys();
                 } catch (IOException e1) {
                     e1.printStackTrace();
-                    JOptionPane.showMessageDialog(null, e1.getMessage(), "配置信息保存失败", JOptionPane.ERROR_MESSAGE);
+                    msg.showMsg(e1.getMessage(), Msg.FAIL);
                 }
             }
         });
+    }
+
+    /**
+     * 初始化
+     */
+    private void init() {
+        /*msg 空实现，防止nullpointException*/
+        msg = new Msg() {
+            @Override
+            public void showMsg(String msg, int type) {
+
+            }
+        };
+
+        if (dataBaseBean == null) {
+            try {
+                /*反序列化*/
+                dataBaseBean = SerializableHelper.unSerializable(DataBaseBean.class);
+            } catch (IOException e) {
+                dataBaseBean = new DataBaseBean();
+                dataBaseBean.setUrl(DBDriver.MYSQL.getUrlTemplate());
+                dataBaseBean.setDriver(DBDriver.MYSQL.getDriver());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        dbDriver = DBHelper.getDbDriver(dataBaseBean.getDriver());
+        //初始化数据库选择下拉控件
+        DefaultComboBoxModel<DBDriver> comboBoxModel = new DefaultComboBoxModel<DBDriver>();
+        comboBoxModel.addElement(DBDriver.MYSQL);
+        comboBoxModel.addElement(DBDriver.ORACLE);
+        this.dbComboBox.setModel(comboBoxModel);
+        /*初始化Form数据*/
+        setData(dataBaseBean);
     }
 
     public static void main(String[] args) {

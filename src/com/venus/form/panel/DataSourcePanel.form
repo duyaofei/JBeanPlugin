@@ -55,9 +55,6 @@
               </grid>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="53cb5" class="javax.swing.JTextField" binding="userText">
             <constraints>
@@ -66,9 +63,6 @@
               </grid>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="89712" class="javax.swing.JTextField" binding="pwdText">
             <constraints>
@@ -77,9 +71,6 @@
               </grid>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="471b2" class="javax.swing.JLabel">
             <constraints>
@@ -102,9 +93,6 @@
               </grid>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="c0d45" class="javax.swing.JLabel">
             <constraints>
@@ -121,11 +109,8 @@
               </grid>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
-          <component id="8c93a" class="javax.swing.JLabel" binding="basePath">
+          <component id="8c93a" class="javax.swing.JLabel">
             <constraints>
               <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -140,9 +125,6 @@
               </grid>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
         </children>
       </grid>
@@ -171,9 +153,6 @@
               </grid>
             </constraints>
             <properties/>
-            <clientProperties>
-              <caretAspectRatio class="java.lang.Float" value="0.04"/>
-            </clientProperties>
           </component>
           <component id="4c0fd" class="javax.swing.JButton" binding="saveBtn">
             <constraints>

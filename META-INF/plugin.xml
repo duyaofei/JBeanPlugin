@@ -1,18 +1,15 @@
 <idea-plugin version="2">
-    <id>com.venus</id>
-    <name>DB>>JavaBean</name>
+    <id>com.venus.form.MainForm</id>
+    <name>DB>>JB</name>
     <version>1.2</version>
     <vendor email="357027361@qq.com.com" url="http://www.venustech.com.cn/">VenusTech</vendor>
 
     <description><![CDATA[
-      Enter short description for your plugin here.<br>
+      JavaBean生成器<br>
       <em>most HTML tags may be used</em>
     ]]></description>
 
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
+  <change-notes><![CDATA[]]>
   </change-notes>
 
   <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->

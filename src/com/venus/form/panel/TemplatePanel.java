@@ -1,6 +1,9 @@
 package com.venus.form.panel;
 
+import com.venus.form.Msg;
+import com.venus.form.Subject;
 import com.venus.helper.SerializableHelper;
+import org.junit.Assert;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -14,19 +17,32 @@ import java.io.IOException;
  * 文件描述:
  * 修改描述:
  */
-public class TemplatePanel {
+public class TemplatePanel extends Subject {
     private JPanel templatePanel;
     private JTextArea templateText;
     private JButton saveBtn;
 
     private TemplateBean templateBean;
 
+    private Msg msg;
+
+    public void setMsg(Msg msg) {
+        this.msg = msg;
+    }
+
     public TemplatePanel() {
+
+        /*实例化一个空的 msg 实现，防止用户没有设置 msg 时 出现nullpoint异常*/
+        msg = new Msg() {
+            @Override
+            public void showMsg(String msg, int type) {
+
+            }
+        };
 
         if (templateBean == null) {
             try {
                 templateBean = SerializableHelper.unSerializable(TemplateBean.class);
-                setData(templateBean);
             } catch (IOException e) {
                 e.printStackTrace();
                 templateBean = new TemplateBean();
@@ -34,20 +50,23 @@ public class TemplatePanel {
                 e.printStackTrace();
             }
         }
+        /*初始化Form*/
+        setData(templateBean);
 
         saveBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+
                 if (isModified(templateBean)) {
                     getData(templateBean);
                     try {
                         SerializableHelper.serializable(templateBean);
                     } catch (IOException e1) {
                         e1.printStackTrace();
-                        JOptionPane.showMessageDialog(null, e1.getMessage(), "保存失败", JOptionPane.WARNING_MESSAGE);
+                        msg.showMsg(e1.getMessage(), Msg.FAIL);
                     }
-                    JOptionPane.showMessageDialog(null, "保存成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    msg.showMsg("保存成功", Msg.SUCCESS);
                 }
 
 

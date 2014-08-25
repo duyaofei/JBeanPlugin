@@ -2,6 +2,7 @@ package com.venus.form;
 
 import com.venus.form.panel.DataSourcePanel;
 import com.venus.form.panel.HomePanel;
+import com.venus.form.panel.TemplatePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +20,7 @@ public class MainForm {
     private JLabel msgLabel;
     private HomePanel homePanel;
     private DataSourcePanel dataSourcePanel;
+    private TemplatePanel templatePanel;
 
     public JPanel getRootPanel() {
         return rootPanel;
@@ -40,14 +42,20 @@ public class MainForm {
         return dataSourcePanel;
     }
 
+    public TemplatePanel getTemplatePanel() {
+        return templatePanel;
+    }
+
     public static void main(String[] args) {
+
         JFrame frame = new JFrame("JavaBean生成器");
         final MainForm mainForm = new MainForm();
-        mainForm.getDataSourcePanel().attach(mainForm.getHomePanel());
-        mainForm.homePanel.setMsg(new Msg() {
+
+        class DefaultMsg implements Msg {
+
             @Override
-            public void showMsg(String msg,int type) {
-                switch (type){
+            public void showMsg(String msg, int type) {
+                switch (type) {
                     case Msg.SUCCESS:
                         mainForm.msgLabel.setForeground(Color.blue);
                         break;
@@ -56,14 +64,23 @@ public class MainForm {
                         break;
                 }
                 mainForm.msgLabel.setText(msg);
-
             }
-        });
+        }
+        /*注册观察者*/
+        mainForm.dataSourcePanel.attach(mainForm.getHomePanel());
+        mainForm.templatePanel.attach(mainForm.getHomePanel());
+        /*设置消息通知回调*/
+        mainForm.homePanel.setMsg(new DefaultMsg());
+        mainForm.templatePanel.setMsg(new DefaultMsg());
+        mainForm.dataSourcePanel.setMsg(new DefaultMsg());
+
         frame.setContentPane(mainForm.rootPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
+
+
     }
 
 }
